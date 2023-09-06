@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+
+  api:
+    build:
+      context: ./api
+    env_file:
+      - .env
+    container_name: backend-api
+    ports:
+      - 5003:8000
+    command: uvicorn main:app --host 0.0.0.0 --reload
+    volumes:
+      - ../:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6-alpine
+    ports:
+      - 6380:6379
+    container_name: backend-redis
+
+
+volumes:
+  nvidia_driver:
+    external: true
